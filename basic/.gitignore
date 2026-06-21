@@ -1,0 +1,14 @@
+# Python
+be/.env
+be/__pycache__/
+be/**/__pycache__/
+be/*.pyc
+be/.venv/
+be/venv/
+
+# Node
+fe/node_modules/
+fe/dist/
+
+# macOS
+.DS_Store

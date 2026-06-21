@@ -1,0 +1,38 @@
+<div class="table-panel">
+  <div class="table-header">
+    <div>
+      <h2>Indexed Documents</h2>
+      <p class="subtitle">Click View, Update or Query on any chunk</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-new" (click)="showModal = true">+ New Document</button>
+      <button class="btn-refresh" (click)="loadDocuments()" [disabled]="loading">
+        {{ loading ? 'Loading…' : 'Refresh' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="grid-wrap">
+    <ag-grid-angular
+      [rowData]="rowData"
+      [columnDefs]="colDefs"
+      [defaultColDef]="defaultColDef"
+      [theme]="theme"
+      [pagination]="true"
+      [paginationPageSize]="20"
+      [rowHeight]="48"
+      [tooltipShowDelay]="300"
+      [domLayout]="'autoHeight'"
+      (gridReady)="onGridReady($event)"
+      style="width:100%;"
+    />
+  </div>
+</div>
+
+<!-- Upload modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="showModal = false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="showModal = false">✕</button>
+    <app-upload (uploaded)="onUploaded()" />
+  </div>
+</div>

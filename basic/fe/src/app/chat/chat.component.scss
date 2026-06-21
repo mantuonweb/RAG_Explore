@@ -1,0 +1,156 @@
+.chat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  h2 { margin: 0 0 0.2rem; font-size: 1.25rem; font-weight: 600; }
+  .subtitle { color: #6b7280; font-size: 0.875rem; margin: 0; }
+}
+
+.doc-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: #f5f3ff;
+  border: 1px solid #e0e7ff;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  min-width: 0;
+  max-width: 280px;
+
+  .badge-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9ca3af;
+  }
+
+  .badge-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4f46e5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 280px;
+  max-height: 480px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding-right: 0.25rem;
+}
+
+.empty-state {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+  margin: auto;
+}
+
+.message {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  max-width: 85%;
+
+  .msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .role-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .context-badge {
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.25);
+    font-weight: 500;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+
+  &.user {
+    background: #6366f1;
+    color: #fff;
+    align-self: flex-end;
+    .role-label { color: #c7d2fe; }
+    .context-badge { background: rgba(255,255,255,0.2); color: #e0e7ff; }
+  }
+
+  &.assistant {
+    background: #f3f4f6;
+    color: #111827;
+    align-self: flex-start;
+    .role-label { color: #6b7280; }
+  }
+
+  &.thinking p { color: #9ca3af; font-style: italic; }
+}
+
+.input-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+
+  textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    &:focus { border-color: #6366f1; }
+    &:disabled { background: #f9fafb; }
+  }
+
+  button {
+    padding: 0.75rem 1.25rem;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+    &:hover:not(:disabled) { background: #4f46e5; }
+    &:disabled { background: #c7d2fe; cursor: not-allowed; }
+  }
+}

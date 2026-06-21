@@ -1,0 +1,52 @@
+<div class="upload-card">
+  <h2>Upload Document</h2>
+  <p class="subtitle">Supported formats: PDF, TXT, MD</p>
+
+  <div class="file-area">
+    <label class="file-label" [class.has-file]="selectedFile">
+      <input
+        type="file"
+        accept=".pdf,.txt,.md"
+        (change)="onFileSelected($event)"
+        [disabled]="uploading"
+      />
+      <span *ngIf="!selectedFile">Click to choose a file</span>
+      <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+    </label>
+  </div>
+
+  <div class="field">
+    <label>Name <span class="required">*</span></label>
+    <input
+      type="text"
+      [(ngModel)]="docName"
+      placeholder="e.g. Q4 Report"
+      [disabled]="uploading"
+    />
+  </div>
+
+  <div class="field">
+    <label>Description</label>
+    <textarea
+      [(ngModel)]="docDescription"
+      placeholder="Optional — what is this document about?"
+      rows="2"
+      [disabled]="uploading"
+    ></textarea>
+  </div>
+
+  <button
+    class="btn-upload"
+    [disabled]="!selectedFile || !docName.trim() || uploading"
+    (click)="upload()"
+  >
+    {{ uploading ? 'Uploading…' : 'Upload & Index' }}
+  </button>
+
+  <div class="result success" *ngIf="result">
+    <strong>Done!</strong> {{ result.chunks_indexed }} chunks indexed.
+    <span class="doc-id">ID: {{ result.doc_id }}</span>
+  </div>
+
+  <div class="result error" *ngIf="error">{{ error }}</div>
+</div>

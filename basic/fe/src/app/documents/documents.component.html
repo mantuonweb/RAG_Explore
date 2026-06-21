@@ -1,0 +1,26 @@
+<div class="docs-card">
+  <div class="docs-header">
+    <div>
+      <h2>Indexed Documents</h2>
+      <p class="subtitle">All chunks stored in pgvector — click a cell in Content to edit and re-embed</p>
+    </div>
+    <button class="btn-refresh" (click)="loadDocuments()" [disabled]="loading">
+      {{ loading ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="grid-wrapper">
+    <ag-grid-angular
+      [rowData]="rowData"
+      [columnDefs]="colDefs"
+      [defaultColDef]="defaultColDef"
+      [theme]="theme"
+      [pagination]="true"
+      [paginationPageSize]="20"
+      [tooltipShowDelay]="300"
+      (gridReady)="onGridReady($event)"
+      (cellValueChanged)="onCellValueChanged($event)"
+      style="width: 100%; height: 100%;"
+    />
+  </div>
+</div>

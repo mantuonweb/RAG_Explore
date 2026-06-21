@@ -1,0 +1,39 @@
+<div class="detail-page">
+  <button class="btn-back" (click)="back()">← Back</button>
+
+  <div class="detail-card" *ngIf="!loading && chunk">
+    <h2>Edit Chunk</h2>
+    <p class="subtitle">Saving will re-embed the content using OpenAI.</p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="label">Source File</span>
+        <span class="value">{{ chunk.source }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Page</span>
+        <span class="value">{{ chunk.page }}</span>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <span class="label">Content</span>
+      <textarea
+        [(ngModel)]="editedContent"
+        rows="12"
+        [disabled]="saving"
+        placeholder="Edit the chunk content…"
+      ></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn-save" (click)="save()" [disabled]="saving || !editedContent.trim()">
+        {{ saving ? 'Saving & re-embedding…' : 'Save' }}
+      </button>
+      <span class="saved-msg" *ngIf="saved">Saved and re-embedded!</span>
+      <span class="error-msg" *ngIf="error">{{ error }}</span>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading…</div>
+</div>

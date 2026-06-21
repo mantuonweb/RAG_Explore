@@ -1,0 +1,29 @@
+<div class="detail-page">
+  <button class="btn-back" (click)="back()">← Back</button>
+
+  <div class="detail-header" *ngIf="!loading">
+    <div>
+      <h2>{{ filename }}</h2>
+      <p class="subtitle">{{ chunks.length }} chunks — click View or Update on any row</p>
+    </div>
+    <button class="btn-query" (click)="back()">← Documents</button>
+  </div>
+
+  <div class="grid-wrap" *ngIf="!loading">
+    <ag-grid-angular
+      [rowData]="chunks"
+      [columnDefs]="colDefs"
+      [defaultColDef]="defaultColDef"
+      [theme]="theme"
+      [pagination]="true"
+      [paginationPageSize]="20"
+      [rowHeight]="48"
+      [tooltipShowDelay]="300"
+      [domLayout]="'autoHeight'"
+      (gridReady)="onGridReady($event)"
+      style="width:100%;"
+    />
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading chunks…</div>
+</div>

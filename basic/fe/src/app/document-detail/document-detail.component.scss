@@ -1,0 +1,70 @@
+.detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  width: fit-content;
+  &:hover { text-decoration: underline; }
+}
+
+.detail-header {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 { margin: 0 0 0.2rem; font-size: 1.1rem; font-weight: 600; }
+  .subtitle { color: #6b7280; font-size: 0.8rem; margin: 0; }
+}
+
+.btn-query {
+  padding: 0.45rem 1rem;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  &:hover { background: #e5e7eb; }
+}
+
+.grid-wrap {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 1rem;
+  width: 100%;
+}
+
+.loading { color: #6b7280; padding: 2rem 0; }
+
+::ng-deep .row-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 100%;
+
+  button {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: opacity 0.15s;
+    &:hover { opacity: 0.82; }
+  }
+
+  .btn-view   { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+  .btn-update { background: #fefce8; color: #a16207; border-color: #fde68a; }
+}

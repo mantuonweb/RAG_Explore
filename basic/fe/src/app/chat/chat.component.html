@@ -1,0 +1,50 @@
+<div class="chat-card">
+  <div class="chat-header">
+    <div>
+      <h2>Ask a Question</h2>
+      <p class="subtitle" *ngIf="docName">Querying: <strong>{{ docName }}</strong></p>
+      <p class="subtitle" *ngIf="!docName">Query your uploaded documents</p>
+    </div>
+
+    <div class="doc-badge" *ngIf="docId">
+      <span class="badge-label">Document</span>
+      <span class="badge-value">{{ docName || docId }}</span>
+    </div>
+  </div>
+
+  <div class="messages" #messagesEl>
+    <div *ngIf="messages().length === 0" class="empty-state">
+      Ask anything about <strong>{{ docName || 'your document' }}</strong>.
+    </div>
+
+    <div
+      *ngFor="let msg of messages()"
+      class="message"
+      [class.user]="msg.role === 'user'"
+      [class.assistant]="msg.role === 'assistant'"
+    >
+      <div class="msg-meta">
+        <span class="role-label">{{ msg.role === 'user' ? 'You' : 'AI' }}</span>
+      </div>
+      <p>{{ msg.text }}</p>
+    </div>
+
+    <div class="message assistant thinking" *ngIf="loading()">
+      <div class="msg-meta"><span class="role-label">AI</span></div>
+      <p>Thinking…</p>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <textarea
+      [(ngModel)]="question"
+      (keydown)="onKeydown($event)"
+      placeholder="Ask something about your document…"
+      rows="2"
+      [disabled]="loading()"
+    ></textarea>
+    <button (click)="ask()" [disabled]="!question.trim() || loading()">
+      Send
+    </button>
+  </div>
+</div>
