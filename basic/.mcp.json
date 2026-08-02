@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "rag-explorer": {
+      "command": "python3",
+      "args": ["/Users/mantunigam/WORKSPACE/RAG Examples/RAG_Explore/basic/mcp_server.py"]
+    }
+  }
+}

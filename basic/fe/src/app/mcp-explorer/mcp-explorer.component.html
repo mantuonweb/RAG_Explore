@@ -1,0 +1,168 @@
+<div class="mcp-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>MCP Explorer</h2>
+      <p class="subtitle">Interact with the MCP server in real time</p>
+    </div>
+    <div class="status-badge" [class.ok]="connected()" [class.err]="!connected()">
+      <span class="dot"></span>
+      {{ connected() ? 'Connected to mcp_server.py' : 'Connecting…' }}
+    </div>
+  </div>
+
+  <div class="explorer-layout" *ngIf="connected(); else loading">
+
+    <!-- Sidebar tabs -->
+    <div class="sidebar">
+      <div class="tab-buttons">
+        <button [class.active]="activeTab() === 'tools'"     (click)="activeTab.set('tools')">
+          Tools <span class="count">{{ tools().length }}</span>
+        </button>
+        <button [class.active]="activeTab() === 'resources'" (click)="activeTab.set('resources')">
+          Resources <span class="count">{{ resources().length }}</span>
+        </button>
+        <button [class.active]="activeTab() === 'prompts'"   (click)="activeTab.set('prompts')">
+          Prompts <span class="count">{{ prompts().length }}</span>
+        </button>
+      </div>
+
+      <!-- Tools list -->
+      <div class="list" *ngIf="activeTab() === 'tools'">
+        <div
+          class="list-item"
+          *ngFor="let t of tools()"
+          [class.active]="selectedTool()?.name === t.name"
+          (click)="selectTool(t)"
+        >
+          <span class="item-name">{{ t.name }}</span>
+          <span class="item-meta">{{ t.params.length }} params</span>
+        </div>
+      </div>
+
+      <!-- Resources list -->
+      <div class="list" *ngIf="activeTab() === 'resources'">
+        <div
+          class="list-item"
+          *ngFor="let r of resources()"
+          [class.active]="selectedResource()?.uri === r.uri"
+          (click)="selectResource(r); activeTab.set('resources')"
+        >
+          <span class="item-name uri">{{ r.uri }}</span>
+          <span class="item-meta">read-only</span>
+        </div>
+      </div>
+
+      <!-- Prompts list -->
+      <div class="list" *ngIf="activeTab() === 'prompts'">
+        <div
+          class="list-item"
+          *ngFor="let p of prompts()"
+          [class.active]="selectedPrompt()?.name === p.name"
+          (click)="selectPrompt(p); activeTab.set('prompts')"
+        >
+          <span class="item-name">{{ p.name }}</span>
+          <span class="item-meta">{{ p.args.length }} args</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="detail">
+
+      <!-- Tool detail -->
+      <ng-container *ngIf="activeTab() === 'tools' && selectedTool() as tool">
+        <div class="detail-header">
+          <span class="primitive-tag tool">Tool</span>
+          <h3>{{ tool.name }}</h3>
+        </div>
+        <p class="desc">{{ tool.description }}</p>
+
+        <div class="params-section" *ngIf="tool.params.length > 0">
+          <h4>Parameters</h4>
+          <div class="param-row" *ngFor="let p of tool.params">
+            <label>
+              {{ p }}
+              <span class="required-star" *ngIf="tool.required.includes(p)">*</span>
+              <span class="optional-tag" *ngIf="!tool.required.includes(p)">optional</span>
+            </label>
+            <textarea
+              [(ngModel)]="toolArgs[p]"
+              [placeholder]="tool.required.includes(p) ? 'required' : 'optional'"
+              rows="2"
+            ></textarea>
+          </div>
+        </div>
+
+        <button class="run-btn" (click)="runTool()" [disabled]="toolLoading()">
+          {{ toolLoading() ? 'Running…' : 'Run tool' }}
+        </button>
+
+        <div class="result-block" *ngIf="toolResult()">
+          <div class="result-label">Response</div>
+          <pre>{{ toolResult() }}</pre>
+        </div>
+      </ng-container>
+
+      <!-- Resource detail -->
+      <ng-container *ngIf="activeTab() === 'resources' && selectedResource() as r">
+        <div class="detail-header">
+          <span class="primitive-tag resource">Resource</span>
+          <h3 class="uri-h3">{{ r.uri }}</h3>
+        </div>
+        <p class="desc">{{ r.description }}</p>
+
+        <button class="run-btn" (click)="readResource()" [disabled]="resourceLoading()">
+          {{ resourceLoading() ? 'Reading…' : 'Read resource' }}
+        </button>
+
+        <div class="result-block" *ngIf="resourceResult()">
+          <div class="result-label">Content</div>
+          <pre>{{ resourceResult() }}</pre>
+        </div>
+      </ng-container>
+
+      <!-- Prompt detail -->
+      <ng-container *ngIf="activeTab() === 'prompts' && selectedPrompt() as p">
+        <div class="detail-header">
+          <span class="primitive-tag prompt">Prompt</span>
+          <h3>{{ p.name }}</h3>
+        </div>
+        <p class="desc">{{ p.description }}</p>
+
+        <div class="params-section" *ngIf="p.args.length > 0">
+          <h4>Arguments</h4>
+          <div class="param-row" *ngFor="let a of p.args">
+            <label>
+              {{ a.name }}
+              <span class="required-star" *ngIf="a.required">*</span>
+              <span class="optional-tag" *ngIf="!a.required">optional</span>
+            </label>
+            <input type="text" [(ngModel)]="promptArgs[a.name]" [placeholder]="a.name">
+          </div>
+        </div>
+
+        <button class="run-btn" (click)="getPrompt()" [disabled]="promptLoading()">
+          {{ promptLoading() ? 'Rendering…' : 'Render prompt' }}
+        </button>
+
+        <div class="result-block" *ngIf="promptResult()">
+          <div class="result-label">Messages</div>
+          <pre>{{ promptResult() }}</pre>
+        </div>
+      </ng-container>
+
+      <!-- Empty state when no resource/prompt selected yet -->
+      <div class="empty-detail"
+        *ngIf="(activeTab() === 'resources' && !selectedResource()) || (activeTab() === 'prompts' && !selectedPrompt())">
+        <p>Select an item from the sidebar</p>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-state">Connecting to MCP server on port 8080…</div>
+  </ng-template>
+</div>

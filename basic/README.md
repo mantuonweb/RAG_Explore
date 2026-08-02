@@ -5,6 +5,37 @@ A full-stack Retrieval-Augmented Generation (RAG) application built for learning
 - **Backend** — FastAPI + LangChain + OpenAI + pgvector (PostgreSQL)
 - **Frontend** — Angular 19 (SPA)
 - **Database** — PostgreSQL 16 with pgvector extension via Docker
+- **MCP Server** — Model Context Protocol server exposing RAG tools to any AI host
+
+---
+
+## Running the Project
+
+Open **4 terminals** and run one command in each:
+
+```bash
+# Terminal 1 — Database (PostgreSQL + pgvector)
+docker compose up -d
+
+# Terminal 2 — RAG Backend (FastAPI, port 8000)
+cd be && uvicorn main:app --reload
+
+# Terminal 3 — MCP Explorer UI (FastAPI + MCP client, port 8080)
+python3 mcp_ui.py
+
+# Terminal 4 — Frontend (Angular, port 4200)
+cd fe && ng serve
+```
+
+| Service        | URL                          | Description                    |
+|----------------|------------------------------|--------------------------------|
+| Frontend       | http://localhost:4200        | Main Angular app               |
+| MCP Explorer   | http://localhost:4200/mcp    | Interactive MCP tool explorer  |
+| RAG API        | http://localhost:8000/docs   | FastAPI Swagger UI             |
+| MCP Bridge     | http://localhost:8080        | MCP client HTTP bridge         |
+| Database       | localhost:5432               | PostgreSQL + pgvector          |
+
+> **First time?** Copy `be/.env.example` to `be/.env` and add your OpenAI API key before starting the backend.
 
 ---
 
@@ -13,6 +44,9 @@ A full-stack Retrieval-Augmented Generation (RAG) application built for learning
 ```
 basic/
 ├── docker-compose.yml       # PostgreSQL + pgvector
+├── mcp_server.py            # MCP server (Tools, Resources, Prompts)
+├── mcp_ui.py                # MCP client bridge (port 8080)
+├── mcp_client.py            # CLI client for testing the MCP server
 ├── be/                      # Python backend
 │   ├── main.py              # FastAPI app entry point
 │   ├── config.py            # Settings loaded from .env
@@ -20,13 +54,15 @@ basic/
 │   ├── .env.example         # Copy to .env and fill in values
 │   ├── routers/
 │   │   ├── query.py         # POST /query  — ask a question
-│   │   └── ingest.py        # POST /ingest — upload a document
+│   │   ├── ingest.py        # POST /ingest — upload a document
+│   │   └── documents.py     # GET/DELETE /documents — manage chunks
 │   └── rag/
 │       ├── chain.py         # LangChain RAG chain (GPT-4o)
 │       ├── ingest.py        # Document loading and chunking
 │       └── vector_store.py  # PGVector store singleton
 └── fe/                      # Angular frontend
     └── src/app/
+        ├── mcp-explorer/    # MCP Explorer page (Tools/Resources/Prompts)
         ├── services/
         │   └── rag-api.service.ts   # HTTP client for backend API
         ├── app.config.ts
@@ -166,6 +202,7 @@ User Question
 | RAG chain  | LangChain                         |
 | Vector DB  | PostgreSQL 16 + pgvector          |
 | API        | FastAPI + Uvicorn                 |
+| MCP        | FastMCP (server) + MCP Python SDK (client) |
 | Frontend   | Angular 19                        |
 | Container  | Docker Compose                    |
 
