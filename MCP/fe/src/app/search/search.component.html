@@ -1,0 +1,48 @@
+<div class="page">
+  <div class="search-bar">
+    <input
+      [(ngModel)]="query"
+      (keydown)="onKey($event)"
+      placeholder="Search a skill — e.g. Kubernetes, React, SAFe"
+    />
+    <button (click)="search()" [disabled]="!query.trim() || loading()">
+      {{ loading() ? '…' : 'Search' }}
+    </button>
+  </div>
+
+  <!-- Source badge -->
+  <div class="badge local"    *ngIf="source() === 'local'">
+    Found in local DB
+  </div>
+  <div class="badge linkedin" *ngIf="source() === 'linkedin'">
+    Not in local DB — fetched from LinkedIn via MCP
+  </div>
+
+  <!-- Local results -->
+  <div class="results" *ngIf="source() === 'local'">
+    <div class="result-card" *ngFor="let r of localResults()">
+      <div class="card-top">
+        <span class="skill-name">{{ r.skill }}</span>
+        <span class="score">{{ (r.score * 100).toFixed(0) }}% match</span>
+      </div>
+      <div class="card-meta" *ngIf="r.source">
+        <span class="meta-label">Resume:</span>
+        <span class="meta-value">{{ r.source }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LinkedIn results -->
+  <div class="results" *ngIf="source() === 'linkedin'">
+    <a class="result-card linkedin-card" *ngFor="let r of linkedinResults()"
+       [href]="r.url" target="_blank" rel="noopener">
+      <span class="li-title">{{ r.title }}</span>
+      <span class="li-snippet">{{ r.snippet }}</span>
+    </a>
+  </div>
+
+  <p class="empty" *ngIf="source() && !localResults().length && !linkedinResults().length">
+    No results found.
+  </p>
+  <p class="err" *ngIf="error()">{{ error() }}</p>
+</div>

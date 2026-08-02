@@ -1,0 +1,24 @@
+<div class="card">
+  <h2>Upload Candidate Resume</h2>
+  <p class="hint">Upload a PDF resume. Skills will be extracted by AI and saved to the local vector DB.</p>
+
+  <label class="file-zone" [class.has-file]="file()">
+    <input type="file" accept=".pdf" (change)="onFilePick($event)" hidden />
+    <span class="icon">📄</span>
+    <span class="label">{{ file() ? file()!.name : 'Click to choose a PDF resume' }}</span>
+    <span class="sub" *ngIf="!file()">Only PDF supported</span>
+  </label>
+
+  <button (click)="upload()" [disabled]="!file() || loading()">
+    {{ loading() ? 'Extracting skills…' : 'Extract & Save Skills' }}
+  </button>
+
+  <p class="err" *ngIf="error()">{{ error() }}</p>
+
+  <div class="result" *ngIf="skills().length">
+    <p class="result-title">✓ {{ skills().length }} skills extracted from <strong>{{ filename() }}</strong></p>
+    <div class="chips">
+      <span class="chip" *ngFor="let s of skills()">{{ s }}</span>
+    </div>
+  </div>
+</div>

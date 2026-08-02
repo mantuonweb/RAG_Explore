@@ -1,0 +1,14 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #f1f5f9; color: #111827; }
+.shell { min-height: 100vh; display: flex; flex-direction: column; }
+header {
+  background: #fff; border-bottom: 1px solid #e5e7eb;
+  padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between;
+  .logo { font-size: 1.1rem; font-weight: 700; color: #0ea5e9; }
+  nav { display: flex; gap: 0.25rem;
+    a { padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500;
+        color: #374151; text-decoration: none; transition: background 0.15s;
+        &:hover { background: #f3f4f6; }
+        &.active { background: #e0f2fe; color: #0ea5e9; } } }
+}
+main { flex: 1; padding: 2rem; max-width: 860px; width: 100%; margin: 0 auto; }

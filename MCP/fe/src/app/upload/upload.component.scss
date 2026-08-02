@@ -1,0 +1,34 @@
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;
+  padding: 24px; display: flex; flex-direction: column; gap: 16px;
+}
+h2 { font-size: 1.1rem; font-weight: 700; color: #111827; }
+.hint { font-size: 0.82rem; color: #6b7280; }
+
+.file-zone {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  border: 2px dashed #e5e7eb; border-radius: 8px; padding: 32px 16px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  &:hover, &.has-file { border-color: #0ea5e9; background: #f0f9ff; }
+  .icon  { font-size: 2rem; }
+  .label { font-size: 0.9rem; font-weight: 500; color: #374151; }
+  .sub   { font-size: 0.75rem; color: #9ca3af; }
+}
+
+button {
+  align-self: flex-start; background: #0ea5e9; color: #fff; border: none;
+  border-radius: 7px; padding: 9px 22px; font-size: 0.875rem; cursor: pointer;
+  &:hover:not(:disabled) { opacity: 0.88; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.err { color: #dc2626; font-size: 0.85rem; }
+
+.result {
+  .result-title { font-size: 0.85rem; color: #16a34a; margin-bottom: 10px; }
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1;
+  border-radius: 99px; padding: 3px 12px; font-size: 0.78rem; font-weight: 500;
+}

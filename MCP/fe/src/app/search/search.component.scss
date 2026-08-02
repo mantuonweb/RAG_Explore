@@ -1,0 +1,35 @@
+.page { display: flex; flex-direction: column; gap: 16px; }
+
+.search-bar { display: flex; gap: 8px;
+  input { flex: 1; border: 1px solid #e5e7eb; border-radius: 7px; padding: 10px 14px;
+          font-size: 0.9rem; font-family: inherit; outline: none;
+          &:focus { border-color: #0ea5e9; } }
+  button { background: #0ea5e9; color: #fff; border: none; border-radius: 7px;
+           padding: 10px 22px; font-size: 0.9rem; cursor: pointer; white-space: nowrap;
+           &:hover:not(:disabled) { opacity: 0.88; }
+           &:disabled { opacity: 0.5; } } }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+         border-radius: 99px; font-size: 0.78rem; font-weight: 600;
+  &.local    { background: #dcfce7; color: #16a34a; }
+  &.linkedin { background: #dbeafe; color: #1d4ed8; } }
+
+.results { display: flex; flex-direction: column; gap: 10px; }
+
+.result-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+               padding: 14px 16px; flex-direction: column; gap: 6px; display: flex;
+  .card-top { display: flex; align-items: center; justify-content: space-between; }
+  .skill-name { font-weight: 600; color: #111827; }
+  .score { font-size: 0.78rem; color: #6b7280; }
+  .card-meta { font-size: 0.76rem; color: #6b7280; display: flex; gap: 4px; }
+  .meta-label { font-weight: 600; }
+  .meta-value { color: #374151; } }
+
+.linkedin-card { flex-direction: column; align-items: flex-start; text-decoration: none; cursor: pointer;
+                 transition: border-color 0.15s;
+  &:hover { border-color: #0ea5e9; }
+  .li-title   { font-weight: 600; color: #0ea5e9; font-size: 0.9rem; }
+  .li-snippet { font-size: 0.8rem; color: #4b5563; margin-top: 4px; line-height: 1.5; } }
+
+.empty { color: #9ca3af; font-size: 0.85rem; }
+.err   { color: #dc2626; font-size: 0.85rem; }
