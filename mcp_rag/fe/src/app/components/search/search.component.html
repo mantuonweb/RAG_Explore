@@ -1,0 +1,112 @@
+<div class="search-page">
+
+  <!-- Query bar -->
+  <mat-card class="search-bar">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="query-field">
+        <mat-label>Ask a question</mat-label>
+        <input matInput [ngModel]="query()" (ngModelChange)="query.set($event)"
+               placeholder="e.g. Who is Mantu? What are his skills?"
+               (keyup.enter)="ask()" />
+        <mat-icon matSuffix>auto_awesome</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="k-field">
+        <mat-label>Chunks</mat-label>
+        <input matInput type="number" min="1" max="20"
+               [ngModel]="k()" (ngModelChange)="k.set(+$event)" />
+      </mat-form-field>
+
+      <button mat-flat-button color="primary"
+              [disabled]="!query().trim() || loading()"
+              (click)="ask()">
+        <mat-icon>send</mat-icon> Ask
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="centered">
+      <mat-spinner diameter="40" />
+      <p class="loading-label">Generating answer…</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @else if (errorMsg()) {
+    <div class="empty-state error">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMsg() }}</p>
+    </div>
+  }
+
+  <!-- No relevant documents found -->
+  @else if (noMatch()) {
+    <div class="empty-state">
+      <mat-icon>manage_search</mat-icon>
+      <p>No relevant documents found for <strong>"{{ query() }}"</strong></p>
+      <p class="hint">Try uploading documents related to this topic, or rephrase your query.</p>
+    </div>
+  }
+
+  <!-- Answer + Sources -->
+  @else if (answer()) {
+
+    <!-- AI Answer card -->
+    <mat-card class="answer-card" [class.web-answer]="fromWeb()">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="ai-icon">{{ fromWeb() ? 'public' : 'smart_toy' }}</mat-icon>
+        <mat-card-title>AI Answer</mat-card-title>
+        <mat-card-subtitle>
+          @if (fromWeb()) {
+            From live web search via MCP
+          } @else {
+            Based on {{ sources().length }} retrieved chunk{{ sources().length !== 1 ? 's' : '' }}
+          }
+        </mat-card-subtitle>
+        @if (fromWeb()) {
+          <mat-chip class="web-chip">Web</mat-chip>
+        }
+      </mat-card-header>
+      <mat-card-content>
+        <p class="answer-text">{{ answer() }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sources -->
+    @if (sources().length > 0) {
+      <mat-divider />
+      <p class="sources-label">
+        <mat-icon>folder_open</mat-icon> Sources
+      </p>
+
+      @for (source of sources(); track $index) {
+        <mat-card class="source-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>article</mat-icon>
+            <mat-card-title>{{ source.metadata.sourceFile }}</mat-card-title>
+            <mat-card-subtitle>Chunk {{ source.metadata.chunkIndex + 1 }}</mat-card-subtitle>
+            <mat-chip class="score-chip" [class]="scoreClass(source.score)">
+              {{ scoreLabel(source.score) }} match
+            </mat-chip>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p class="chunk-text">
+              {{ isExpanded($index) ? source.content : synopsis(source.content) }}
+            </p>
+            @if (isLong(source.content)) {
+              <button mat-button color="primary" class="toggle-btn"
+                      (click)="toggleSource($index)">
+                <mat-icon>{{ isExpanded($index) ? 'expand_less' : 'expand_more' }}</mat-icon>
+                {{ isExpanded($index) ? 'Show less' : 'Show more' }}
+              </button>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  }
+
+</div>

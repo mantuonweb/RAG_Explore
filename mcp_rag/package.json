@@ -1,0 +1,24 @@
+{
+  "name": "mcp-rag",
+  "version": "1.0.0",
+  "description": "MCP RAG monorepo — Node.js backend + Angular frontend",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start:be\" \"npm run start:fe\" \"npm run start:mcp\"",
+    "start:be": "npm --prefix be start",
+    "start:fe": "npm --prefix fe start",
+    "start:mcp": "npm --prefix mcp start",
+    "install:all": "npm --prefix be install && npm --prefix fe install && npm --prefix mcp install",
+    "build": "npm run build:be && npm run build:fe && npm run build:mcp",
+    "build:be": "npm --prefix be run build",
+    "build:fe": "npm --prefix fe run build",
+    "build:mcp": "npm --prefix mcp run build",
+    "test": "concurrently \"npm run test:be\" \"npm run test:fe\" \"npm run test:mcp\"",
+    "test:be": "npm --prefix be test",
+    "test:fe": "npm --prefix fe test",
+    "test:mcp": "npm --prefix mcp test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

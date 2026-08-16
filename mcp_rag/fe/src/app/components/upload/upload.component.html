@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>upload_file</mat-icon>
+    <mat-card-title>Upload Document</mat-card-title>
+    <mat-card-subtitle>Accepted formats: .txt, .pdf</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (status() === 'uploading') {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <div class="drop-zone" (click)="fileInput.click()">
+      <input #fileInput type="file" accept=".txt,.pdf" (change)="onFileSelected($event)" hidden />
+      @if (selectedFile()) {
+        <mat-icon class="icon file">description</mat-icon>
+        <p class="filename">{{ selectedFile()!.name }}</p>
+        <p class="filesize">{{ formatSize(selectedFile()!.size) }}</p>
+      } @else {
+        <mat-icon class="icon upload">cloud_upload</mat-icon>
+        <p>Click to select a file</p>
+      }
+    </div>
+
+    @if (status() === 'success' && result()) {
+      <div class="alert success">
+        <mat-icon>check_circle</mat-icon>
+        <div>
+          <strong>{{ result()!.sourceFile }}</strong> uploaded successfully —
+          {{ result()!.chunkCount }} chunks indexed.
+        </div>
+      </div>
+    }
+
+    @if (status() === 'error') {
+      <div class="alert error">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMsg() }}</span>
+      </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="start">
+    <button mat-flat-button color="primary"
+            [disabled]="!selectedFile() || status() === 'uploading'"
+            (click)="upload()">
+      <mat-icon>cloud_upload</mat-icon> Upload
+    </button>
+    @if (status() === 'success') {
+      <button mat-button (click)="reset()">Upload Another</button>
+    }
+  </mat-card-actions>
+</mat-card>

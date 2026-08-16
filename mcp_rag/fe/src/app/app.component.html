@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <span class="brand">RAG Explorer</span>
+  <a mat-button routerLink="/upload" routerLinkActive="active-link">
+    <mat-icon>upload_file</mat-icon> Upload
+  </a>
+  <a mat-button routerLink="/documents" routerLinkActive="active-link">
+    <mat-icon>description</mat-icon> Documents
+  </a>
+  <a mat-button routerLink="/search" routerLinkActive="active-link">
+    <mat-icon>search</mat-icon> Search
+  </a>
+</mat-toolbar>
+
+<main>
+  <router-outlet />
+</main>

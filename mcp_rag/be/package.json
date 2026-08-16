@@ -1,0 +1,40 @@
+{
+  "name": "be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "nodemon --exec tsx src/index.ts --ext ts",
+    "build": "tsc",
+    "start:prod": "npm run build && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.21.0",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.2.8",
+    "@langchain/openai": "^1.5.8",
+    "@langchain/pgvector": "^0.1.0",
+    "@langchain/textsplitters": "^1.0.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "langchain": "^1.5.9",
+    "multer": "^2.2.0",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.11.3",
+    "uuid": "^14.0.1"
+  }
+}
